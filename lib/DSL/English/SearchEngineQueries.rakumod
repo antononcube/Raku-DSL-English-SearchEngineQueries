@@ -53,7 +53,7 @@ multi ToSearchEngineQueryCode ( Str $command where not has-semicolon($command), 
 
     die 'Unknown target.' unless %targetToAction{$target}:exists;
 
-    my $match = DSL::English::SearchEngineQueries::Grammar.parse($command, actions => %targetToAction{$target} );
+    my $match = DSL::English::SearchEngineQueries::Grammar.parse($command.trim, actions => %targetToAction{$target} );
     die 'Cannot parse the given command.' unless $match;
     return $match.made;
 }
