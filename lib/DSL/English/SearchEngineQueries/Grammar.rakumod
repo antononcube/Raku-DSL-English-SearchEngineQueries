@@ -60,6 +60,6 @@ grammar DSL::English::SearchEngineQueries::Grammar
     token keyword-separator { ':' }
     token query-filetype-element { <.filetype> <.keyword-separator> <query-simple-element> }
     token query-term { \w+ }
-    token query-phrase { '"' <-["]>+ '"' }
+    token query-phrase { '"' <-["]>+ '"' | '\'' <-[']>+ '\'' }
 
 }
