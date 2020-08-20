@@ -1,0 +1,13 @@
+use v6;
+
+use DSL::Shared::Roles::English::CommonParts;
+
+# Search engine specific phrases
+role DSL::English::SearchEngineQueries::Grammar::SearchPhrases
+        does DSL::Shared::Roles::English::CommonParts {
+    # Tokens
+    token filter-verb { 'filter' }
+    token select-verb { 'select' }
+
+    rule filter { <filter-verb> | <select-verb> }
+}

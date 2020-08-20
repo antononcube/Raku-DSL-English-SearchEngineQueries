@@ -1,0 +1,33 @@
+{
+  "perl": "6.d",
+  "name": "DSL::English::SearchEngineQueries",
+  "api": "1",
+  "auth": "github:antononcube",
+  "version": "0.5.0",
+  "description": "Search queries building by natural language commands.",
+  "authors": [
+    "Anton Antonov"
+  ],
+  "license": "GPL-3.0-or-later",
+  "provides": {
+    "DSL::English::SearchEngineQueries": "lib/DSL/English/SearchEngineQueries.rakumod",
+    "DSL::English::SearchEngineQueries::Grammar": "lib/DSL/English/SearchEngineQueries/Grammar.rakumod",
+    "DSL::English::SearchEngineQueries::Grammar::SearchPhrases": "lib/DSL/English/SearchEngineQueries/Grammar/SearchPhrases.rakumod",
+    "DSL::English::SearchEngineQueries::Actions::R::Predicate": "lib/DSL/English/SearchEngineQueries/Actions/R/Predicate.rakumod",
+    "DSL::English::SearchEngineQueries::Actions::R::SMRMon": "lib/DSL/English/SearchEngineQueries/Actions/R/SMRMon.rakumod"
+  },
+  "depends": [
+    "DSL::Shared"
+  ],
+  "build-depends": [],
+  "test-depends": [],
+  "resources": [],
+  "tags": [
+    "search engine",
+    "search query",
+    "query",
+    "parser",
+    "interpreter"
+  ],
+  "source-url": "https://github.com/antononcube/Raku-DSL-English-SearchEngineQueries.git"
+}
