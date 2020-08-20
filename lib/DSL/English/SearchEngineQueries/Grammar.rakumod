@@ -52,14 +52,15 @@ grammar DSL::English::SearchEngineQueries::Grammar
     # Search query command
     rule search-query-command { <query-element-list> }
     rule query-element-list { <query-element>+ % <.ws> }
-    token query-element { <query-filetype-element> | <query-must-element> | <query-must-not-element> | <query-should-element> }
+    token query-element { <query-keyword-value-element> | <query-must-element> | <query-must-not-element> | <query-should-element> }
     token query-simple-element { <query-term> | <query-phrase> }
     token query-should-element { ['OR' \h+]? <query-simple-element> }
     token query-must-element { '+' <query-simple-element> | 'AND' \h+ <query-simple-element> }
     token query-must-not-element { '-' <query-simple-element> | 'NOT' \h+ <query-simple-element> }
-    token keyword-separator { ':' }
-    token query-filetype-element { <.filetype> <.keyword-separator> <query-simple-element> }
-    token query-term { \w+ }
+    token query-keyword-value-separator { ':' }
+    token query-keyword-value-element { <query-keyword> <.query-keyword-value-separator> <query-simple-element> }
+    token query-keyword { <filetype-noun> | <link-noun> | <site-noun>  }
+    token query-term { \S+ }
     token query-phrase { '"' <-["]>+ '"' | '\'' <-[']>+ '\'' }
 
 }

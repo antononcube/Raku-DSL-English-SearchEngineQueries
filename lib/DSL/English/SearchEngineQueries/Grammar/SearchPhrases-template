@@ -6,8 +6,11 @@ use DSL::Shared::Roles::English::CommonParts;
 role DSL::English::SearchEngineQueries::Grammar::SearchPhrases
         does DSL::Shared::Roles::English::CommonParts {
     # Tokens
+    token filetype-noun { 'filetype' }
     token filter-verb { 'filter' }
+    token link-noun { 'link' }
     token select-verb { 'select' }
+    token site-noun { 'site' }
 
     rule filter { <filter-verb> | <select-verb> }
 }

@@ -88,6 +88,7 @@ class DSL::English::SearchEngineQueries::Actions::R::SMRMon
 	method query-should-element($/) { make [ 'SHOULD', $<query-simple-element>.made ]; }
 	method query-must-element($/) { make [ 'MUST', $<query-simple-element>.made ]; }
 	method query-must-not-element($/) { make [ 'MUSTNOT', $<query-simple-element>.made ]; }
-	method query-filetype-element($/) { make [ 'FILETYPE', $<query-simple-element>.made ]; }
+	method query-keyword-value-element($/) { make [ $<query-keyword>.made, $<query-simple-element>.made ]; }
+	method query-keyword($/) { make $/.Str.uc; }
 
 }
