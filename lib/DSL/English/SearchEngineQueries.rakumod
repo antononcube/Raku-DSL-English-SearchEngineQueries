@@ -17,6 +17,7 @@ unit module DSL::English::SearchEngineQueries;
 
 use DSL::English::SearchEngineQueries::Grammar;
 
+use DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard;
 use DSL::English::SearchEngineQueries::Actions::R::SMRMon;
 
 
@@ -34,12 +35,16 @@ use DSL::English::SearchEngineQueries::Actions::R::SMRMon;
 #};
 
 my %targetToAction =
-    "SMRMon-R"         => DSL::English::SearchEngineQueries::Actions::R::SMRMon,
-    "R-SMRMon"         => DSL::English::SearchEngineQueries::Actions::R::SMRMon;
+    "Elasticsearch"          => DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard,
+    "Elasticsearch-Standard" => DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard,
+    "SMRMon-R"               => DSL::English::SearchEngineQueries::Actions::R::SMRMon,
+    "R-SMRMon"               => DSL::English::SearchEngineQueries::Actions::R::SMRMon;
 
 my %targetToSeparator{Str} =
-    "R-SMRMon"         => " %>%\n",
-    "SMRMon-R"         => " %>%\n";
+    "Elasticsearch"          => " \n",
+    "Elasticsearch-Standard" => " \n",
+    "R-SMRMon"               => " %>%\n",
+    "SMRMon-R"               => " %>%\n";
 
 #-----------------------------------------------------------
 sub has-semicolon (Str $word) {
