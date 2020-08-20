@@ -78,7 +78,7 @@ class DSL::English::SearchEngineQueries::Actions::R::SMRMon
 		my $must= %groups{'MUST'};
 		my $mustNot = %groups{'MUSTNOT'};
 
-		make 'SMRMonRetrieveByQueryElements( should = c( ' ~ $should.join(', ') ~ ' ), must = c( ' ~ $must.join(', ') ~ ' ), mustNot = c( ' ~ $mustNot.join(', ') ~ ' )';
+		make 'SMRMonRetrieveByQueryElements( should = c( ' ~ $should.join(', ') ~ ' ), must = c( ' ~ $must.join(', ') ~ ' ), mustNot = c( ' ~ $mustNot.join(', ') ~ ' ) )';
 	}
 
 	method query-element($/) { make $/.values[0].made; }
