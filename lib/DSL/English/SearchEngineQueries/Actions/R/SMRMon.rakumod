@@ -74,11 +74,11 @@ class DSL::English::SearchEngineQueries::Actions::R::SMRMon
 
 		my %groups =  @pairs.classify: *.[0], as => *.[1];
 
-		my $should = %groups{'SHOULD'};
-		my $must= %groups{'MUST'};
-		my $mustNot = %groups{'MUSTNOT'};
+		my $should = do if %groups<SHOULD> { 'c( ' ~ %groups<SHOULD>.join(', ') ~ ' )' } else { 'NULL' };
+		my $must = do if %groups<MUST> { 'c( ' ~ %groups<MUST>.join(', ') ~ ' )' } else { 'NULL' };
+		my $mustNot = do if %groups<MUSTNOT> { 'c( ' ~ %groups<MUSTNOT>.join(', ') ~ ' )' } else { 'NULL' };
 
-		make 'SMRMonRetrieveByQueryElements( should = c( ' ~ $should.join(', ') ~ ' ), must = c( ' ~ $must.join(', ') ~ ' ), mustNot = c( ' ~ $mustNot.join(', ') ~ ' ) )';
+		make 'SMRMonRetrieveByQueryElements( should = ' ~ $should ~ ', must = ' ~ $must ~ ', mustNot = ' ~ $mustNot ~ ' )';
 	}
 
 	method query-element($/) { make $/.values[0].made; }
