@@ -62,6 +62,13 @@ class DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard
 	method trivial-parameter-false($/) { make 'false'; }
 	method trivial-parameter-true($/) { make 'true'; }
 
+	# Data load command
+    method data-load-command($/)  { make $/.values[0].made; }
+    method data-location-spec($/) { make $<dataset-name>.made; }
+	method load-data-table($/)    { make 'Not implemented. (Does not apply.)'; }
+    method use-data-table($/)     { make 'Not implemented. (Does not apply.)'; }
+    method use-recommender($/)    { make "Not implemented. (Does not apply.)"; }
+
 	# Filter commands
 	method filter-command($/) { make 'dplyr::filter(' ~ $<filter-spec>.made ~ ')'; }
 	method filter-spec($/) { make $<predicates-list>.made; }
@@ -78,7 +85,7 @@ class DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard
 		my $must    = do if %groups<MUST>    { '[' ~ map( { ' { "term" : ' ~ $_ ~ ' }' }, %groups<MUST>.List    ).join(', ') ~ ' ]' } else { '[]' };
 		my $mustNot = do if %groups<MUSTNOT> { '[' ~ map( { ' { "term" : ' ~ $_ ~ ' }' }, %groups<MUSTNOT>.List ).join(', ') ~ ' ]' } else { '[]' };
 
-		make '{ "bool" : { "should" : ' ~ $should ~ ', "must" : ' ~ $must ~ ', "must_not" :' ~ $mustNot ~ ' } }';
+		make '{ "bool" : { "should" : ' ~ $should ~ ', "must" : ' ~ $must ~ ', "must_not" : ' ~ $mustNot ~ ' } }';
 	}
 
 	method query-element-spec($/) { make $/.values[0].made; }

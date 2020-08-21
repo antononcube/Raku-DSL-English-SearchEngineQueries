@@ -62,7 +62,14 @@ class DSL::English::SearchEngineQueries::Actions::R::SMRMon
 	method trivial-parameter-false($/) { make 'FALSE'; }
 	method trivial-parameter-true($/) { make 'TRUE'; }
 
-	# Filter commands
+	# Data load command
+    method data-load-command($/)  { make $/.values[0].made; }
+    method data-location-spec($/) { make $<dataset-name>.made; }
+	method load-data-table($/)    { make 'SMRMonSetData( data = ' ~ $<data-location-spec>.made ~ ')'; }
+    method use-data-table($/)     { make 'SMRMonSetData( data = ' ~ $<variable-name>.made ~ ')'; }
+    method use-recommender($/)    { make $<variable-name>.made; }
+
+	# Filter command
 	method filter-command($/) { make 'dplyr::filter(' ~ $<filter-spec>.made ~ ')'; }
 	method filter-spec($/) { make $<predicates-list>.made; }
 

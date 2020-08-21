@@ -9,8 +9,10 @@ role DSL::English::SearchEngineQueries::Grammar::SearchPhrases
     token filetype-noun { 'filetype' }
     token filter-verb { 'filter' }
     token link-noun { 'link' }
+    token recommender { 'recommender' }
     token select-verb { 'select' }
     token site-noun { 'site' }
 
     rule filter { <filter-verb> | <select-verb> }
+    rule recommender-object { <recommender> [ <object> | <system> ]? | 'smr' }
 }

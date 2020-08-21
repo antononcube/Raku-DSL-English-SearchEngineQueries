@@ -42,8 +42,16 @@ grammar DSL::English::SearchEngineQueries::Grammar
         does DSL::Shared::Roles::PredicateSpecification {
     # TOP
     rule TOP {
+        <data-load-command> |
         <filter-command> |
         <search-query-command> }
+
+    # Load data
+    rule data-load-command { <load-data-table> | <use-recommender> | <use-data-table> }
+    rule data-location-spec { <dataset-name> }
+    rule load-data-table { <.load-data-directive> <data-location-spec> }
+    rule use-data-table  { [ <.use-verb> | <.using-preposition> ] <.the-determiner>? <.data>? <variable-name> }
+    rule use-recommender { [ <.use-verb> | <.using-preposition> ] <.the-determiner>? <.recommender-object> <variable-name> }
 
     # Filter command
     rule filter-command { <filter> <.the-determiner>? <.documents>? [ <.for-which-phrase>? | <.by-preposition> ] <filter-spec> }
