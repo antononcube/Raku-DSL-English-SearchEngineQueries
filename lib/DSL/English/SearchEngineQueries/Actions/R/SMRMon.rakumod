@@ -69,8 +69,8 @@ class DSL::English::SearchEngineQueries::Actions::R::SMRMon
 	# Search command
 	method search-query-command($/) { make $/.values[0].made; }
 
-	method query-element-list($/) {
-		my @pairs = $<query-element>>>.made;
+	method query-element-spec-list($/) {
+		my @pairs = $<query-element-spec>>>.made;
 
 		my %groups =  @pairs.classify: *.[0], as => *.[1];
 
@@ -81,14 +81,21 @@ class DSL::English::SearchEngineQueries::Actions::R::SMRMon
 		make 'SMRMonRetrieveByQueryElements( should = ' ~ $should ~ ', must = ' ~ $must ~ ', mustNot = ' ~ $mustNot ~ ' )';
 	}
 
+	method query-element-spec($/) { make $/.values[0].made; }
 	method query-element($/) { make $/.values[0].made; }
+
     method query-simple-element($/) { make $/.values[0].made; }
 	method query-term($/) { make '"' ~ $/.Str ~ '"'; }
 	method query-phrase($/) { make $/.Str; }
-	method query-should-element($/) { make [ 'SHOULD', $<query-simple-element>.made ]; }
-	method query-must-element($/) { make [ 'MUST', $<query-simple-element>.made ]; }
-	method query-must-not-element($/) { make [ 'MUSTNOT', $<query-simple-element>.made ]; }
+
+	method query-should-element($/)   { make [ 'SHOULD',  $<query-element>.made ]; }
+	method query-must-element($/)     { make [ 'MUST',    $<query-element>.made ]; }
+	method query-must-not-element($/) { make [ 'MUSTNOT', $<query-element>.made ]; }
+
 	method query-keyword-value-element($/) { make [ $<query-keyword>.made, $<query-simple-element>.made ]; }
 	method query-keyword($/) { make $/.Str.uc; }
+
+	method query-field-value-element($/) { make $<query-field>.made ~ ":" ~ $<query-simple-element>.made; }
+	method query-field($/) { make $/.Str; }
 
 }
