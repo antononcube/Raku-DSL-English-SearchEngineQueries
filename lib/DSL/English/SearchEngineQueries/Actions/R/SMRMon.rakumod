@@ -82,7 +82,13 @@ class DSL::English::SearchEngineQueries::Actions::R::SMRMon
 	}
 
 	method query-element-spec($/) { make $/.values[0].made; }
-	method query-element($/) { make $/.values[0].made; }
+	method query-element($/) {
+		if $<query-simple-element> {
+			make $/.values[0].made;
+		} else {
+			make '"' ~ $/.values[0].made.subst(:g, '"', '') ~ '"';
+		}
+	}
 
     method query-simple-element($/) { make $/.values[0].made; }
 	method query-term($/) { make '"' ~ $/.Str ~ '"'; }
@@ -96,6 +102,5 @@ class DSL::English::SearchEngineQueries::Actions::R::SMRMon
 	method query-keyword($/) { make $/.Str.uc; }
 
 	method query-field-value-element($/) { make $<query-field>.made ~ ":" ~ $<query-simple-element>.made; }
-	method query-field($/) { make $/.Str; }
-
+	method query-field($/) {make $/.values[0].made; }
 }
