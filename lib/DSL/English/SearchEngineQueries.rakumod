@@ -18,6 +18,7 @@ unit module DSL::English::SearchEngineQueries;
 use DSL::English::SearchEngineQueries::Grammar;
 
 use DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard;
+use DSL::English::SearchEngineQueries::Actions::R::tidyverse;
 use DSL::English::SearchEngineQueries::Actions::R::SMRMon;
 
 
@@ -37,12 +38,14 @@ use DSL::English::SearchEngineQueries::Actions::R::SMRMon;
 my %targetToAction =
     "Elasticsearch"          => DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard,
     "Elasticsearch-Standard" => DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard,
-    "SMRMon-R"               => DSL::English::SearchEngineQueries::Actions::R::SMRMon,
-    "R-SMRMon"               => DSL::English::SearchEngineQueries::Actions::R::SMRMon;
+    "R-tidyverse"            => DSL::English::SearchEngineQueries::Actions::R::tidyverse,
+    "R-SMRMon"               => DSL::English::SearchEngineQueries::Actions::R::SMRMon,
+    "SMRMon-R"               => DSL::English::SearchEngineQueries::Actions::R::SMRMon;
 
 my %targetToSeparator{Str} =
     "Elasticsearch"          => " \n",
     "Elasticsearch-Standard" => " \n",
+    "R-tidyverse"            => " %>%\n",
     "R-SMRMon"               => " %>%\n",
     "SMRMon-R"               => " %>%\n";
 

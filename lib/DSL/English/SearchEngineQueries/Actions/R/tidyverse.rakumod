@@ -1,7 +1,7 @@
 =begin comment
 #==============================================================================
 #
-#   Search engine queries SMRMon-R actions in Raku (Perl 6)
+#   Search engine queries R-tidyverse actions in Raku (Perl 6)
 #   Copyright (C) 2020  Anton Antonov
 #
 #   This program is free software: you can redistribute it and/or modify
@@ -32,9 +32,9 @@ use v6;
 use DSL::English::SearchEngineQueries::Grammar;
 use DSL::English::SearchEngineQueries::Actions::R::Predicate;
 
-unit module DSL::English::SearchEngineQueries::Actions::R::SMRMon;
+unit module DSL::English::SearchEngineQueries::Actions::R::tidyverse;
 
-class DSL::English::SearchEngineQueries::Actions::R::SMRMon
+class DSL::English::SearchEngineQueries::Actions::R::tidyverse
         is DSL::English::SearchEngineQueries::Actions::R::Predicate {
 
 	method TOP($/) { make $/.values[0].made; }
@@ -65,12 +65,12 @@ class DSL::English::SearchEngineQueries::Actions::R::SMRMon
 	# Data load command
     method data-load-command($/)  { make $/.values[0].made; }
     method data-location-spec($/) { make $<dataset-name>.made; }
-	method load-data-table($/)    { make 'SMRMonSetData( data = ' ~ $<data-location-spec>.made ~ ')'; }
-    method use-data-table($/)     { make 'SMRMonSetData( data = ' ~ $<variable-name>.made ~ ')'; }
-    method use-recommender($/)    { make $<variable-name>.made; }
+	method load-data-table($/)    { make 'data(' ~ $<data-location-spec>.made ~ ')'; }
+    method use-data-table($/)     { make $<variable-name>.made; }
+    method use-recommender($/)    { make $<variable-name>.made ~ ' %>% SMRMonTakeData()'; }
 
 	# Filter command
-	method filter-command($/) { make 'SMRMonFilterMatrix( ' ~ $<filter-spec>.made ~ ' )'; }
+	method filter-command($/) { make 'dplyr::filter(' ~ $<filter-spec>.made ~ ')'; }
 	method filter-spec($/) { make $<predicates-list>.made; }
 
 	# Search command
@@ -81,11 +81,11 @@ class DSL::English::SearchEngineQueries::Actions::R::SMRMon
 
 		my %groups =  @pairs.classify: *.[0], as => *.[1];
 
-		my $should = do if %groups<SHOULD> { 'c( ' ~ %groups<SHOULD>.join(', ') ~ ' )' } else { 'NULL' };
-		my $must = do if %groups<MUST> { 'c( ' ~ %groups<MUST>.join(', ') ~ ' )' } else { 'NULL' };
-		my $mustNot = do if %groups<MUSTNOT> { 'c( ' ~ %groups<MUSTNOT>.join(', ') ~ ' )' } else { 'NULL' };
+		my $should = do if %groups<SHOULD> { ~ %groups<SHOULD>.join(' | ') } else { '' };
+		my $must = do if %groups<MUST> { 'c( ' ~ %groups<MUST>.join(' & ') ~ ' )' } else { '' };
+		my $mustNot = do if %groups<MUSTNOT> { '!( ' ~ %groups<MUSTNOT>.join(' & ') ~ ' )' } else { '' };
 
-		make 'SMRMonRetrieveByQueryElements( should = ' ~ $should ~ ', must = ' ~ $must ~ ', mustNot = ' ~ $mustNot ~ ' )';
+		make 'dplyr::filter(  ' ~ $should ~ ' ' ~ $must ~ ' ' ~ $mustNot ~ ' )';
 	}
 
 	method query-element-spec($/) { make $/.values[0].made; }
