@@ -85,15 +85,18 @@ class DSL::English::SearchEngineQueries::Actions::R::tidyverse
 		my $must = do if %groups<MUST> { 'c( ' ~ %groups<MUST>.join(' & ') ~ ' )' } else { '' };
 		my $mustNot = do if %groups<MUSTNOT> { '!( ' ~ %groups<MUSTNOT>.join(' & ') ~ ' )' } else { '' };
 
-		make 'dplyr::filter(  ' ~ $should ~ ' ' ~ $must ~ ' ' ~ $mustNot ~ ' )';
+		my $junctMust = do if $should.chars() > 0 { ' & ' } else { '' };
+		my $junctMustNot = do if $should.chars() + $must.chars() > 0 { ' & ' } else { '' };
+
+		make 'dplyr::filter(  (' ~ $should ~ ')' ~ $junctMust ~ $must ~ $junctMustNot ~ $mustNot ~ ' )';
 	}
 
 	method query-element-spec($/) { make $/.values[0].made; }
 	method query-element($/) {
 		if $<query-simple-element> {
-			make $/.values[0].made;
+			make 'term = ' ~ $/.values[0].made;
 		} else {
-			make '"' ~ $/.values[0].made.subst(:g, '"', '') ~ '"';
+			make $/.values[0].made;
 		}
 	}
 
@@ -108,6 +111,6 @@ class DSL::English::SearchEngineQueries::Actions::R::tidyverse
 	method query-keyword-value-element($/) { make [ $<query-keyword>.made, $<query-simple-element>.made ]; }
 	method query-keyword($/) { make $/.Str.uc; }
 
-	method query-field-value-element($/) { make $<query-field>.made ~ ":" ~ $<query-simple-element>.made; }
+	method query-field-value-element($/) { make $<query-field>.made ~ " = " ~ $<query-simple-element>.made; }
 	method query-field($/) {make $/.values[0].made; }
 }
