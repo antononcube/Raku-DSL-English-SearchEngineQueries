@@ -30,12 +30,12 @@
 
 use v6;
 use DSL::English::SearchEngineQueries::Grammar;
-use DSL::English::SearchEngineQueries::Actions::Elasticsearch::Predicate;
+use DSL::Shared::Actions::R::PredicateSpecification;
 
 unit module DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard;
 
 class DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard
-        is DSL::English::SearchEngineQueries::Actions::Elasticsearch::Predicate {
+        is DSL::Shared::Actions::R::PredicateSpecification {
 
 	method TOP($/) { make $/.values[0].made; }
 

@@ -11,11 +11,11 @@
   "license": "GPL-3.0-or-later",
   "provides": {
     "DSL::English::SearchEngineQueries": "lib/DSL/English/SearchEngineQueries.rakumod",
-    "DSL::English::SearchEngineQueries::Actions::Elasticsearch::Predicate": "lib/DSL/English/SearchEngineQueries/Actions/Elasticsearch/Predicate.rakumod",
     "DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard": "lib/DSL/English/SearchEngineQueries/Actions/Elasticsearch/Standard.rakumod",
-    "DSL::English::SearchEngineQueries::Actions::R::Predicate": "lib/DSL/English/SearchEngineQueries/Actions/R/Predicate.rakumod",
     "DSL::English::SearchEngineQueries::Actions::R::SMRMon": "lib/DSL/English/SearchEngineQueries/Actions/R/SMRMon.rakumod",
     "DSL::English::SearchEngineQueries::Actions::R::tidyverse": "lib/DSL/English/SearchEngineQueries/Actions/R/tidyverse.rakumod",
+    "DSL::English::SearchEngineQueries::Actions::WL::SMRMon": "lib/DSL/English/SearchEngineQueries/Actions/WL/SMRMon.rakumod",
+    "DSL::English::SearchEngineQueries::Actions::WL::System": "lib/DSL/English/SearchEngineQueries/Actions/WL/System.rakumod",
     "DSL::English::SearchEngineQueries::Grammar": "lib/DSL/English/SearchEngineQueries/Grammar.rakumod",
     "DSL::English::SearchEngineQueries::Grammar::SearchPhrases": "lib/DSL/English/SearchEngineQueries/Grammar/SearchPhrases.rakumod"
   },

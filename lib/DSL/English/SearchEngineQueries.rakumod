@@ -20,6 +20,7 @@ use DSL::English::SearchEngineQueries::Grammar;
 use DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard;
 use DSL::English::SearchEngineQueries::Actions::R::tidyverse;
 use DSL::English::SearchEngineQueries::Actions::R::SMRMon;
+use DSL::English::SearchEngineQueries::Actions::WL::SMRMon;
 
 
 #-----------------------------------------------------------
@@ -40,14 +41,18 @@ my %targetToAction =
     "Elasticsearch-Standard" => DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard,
     "R-tidyverse"            => DSL::English::SearchEngineQueries::Actions::R::tidyverse,
     "R-SMRMon"               => DSL::English::SearchEngineQueries::Actions::R::SMRMon,
-    "SMRMon-R"               => DSL::English::SearchEngineQueries::Actions::R::SMRMon;
+    "SMRMon-R"               => DSL::English::SearchEngineQueries::Actions::R::SMRMon,
+    "WL-SMRMon"              => DSL::English::SearchEngineQueries::Actions::WL::SMRMon,
+    "SMRMon-WL"              => DSL::English::SearchEngineQueries::Actions::WL::SMRMon;
 
 my %targetToSeparator{Str} =
     "Elasticsearch"          => " \n",
     "Elasticsearch-Standard" => " \n",
     "R-tidyverse"            => " %>%\n",
     "R-SMRMon"               => " %>%\n",
-    "SMRMon-R"               => " %>%\n";
+    "SMRMon-R"               => " %>%\n",
+    "WL-SMRMon"              => " ==>\n",
+    "SMRMon-WL"              => " ==>\n";
 
 #-----------------------------------------------------------
 sub has-semicolon (Str $word) {

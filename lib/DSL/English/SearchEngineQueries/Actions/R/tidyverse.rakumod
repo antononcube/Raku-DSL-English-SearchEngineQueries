@@ -30,37 +30,21 @@
 
 use v6;
 use DSL::English::SearchEngineQueries::Grammar;
-use DSL::English::SearchEngineQueries::Actions::R::Predicate;
+use DSL::Shared::Actions::R::CommonStructures;
+use DSL::Shared::Actions::R::PredicateSpecification;
 
 unit module DSL::English::SearchEngineQueries::Actions::R::tidyverse;
 
 class DSL::English::SearchEngineQueries::Actions::R::tidyverse
-        is DSL::English::SearchEngineQueries::Actions::R::Predicate {
+        is DSL::Shared::Actions::R::CommonStructures
+        is DSL::Shared::Actions::R::PredicateSpecification {
 
 	method TOP($/) { make $/.values[0].made; }
 
-	# General
-	method dataset-name($/) { make $/.Str; }
-	method variable-name($/) { make $/.Str; }
-	method list-separator($/) { make ','; }
+	# DSL::Shared::Actions::R::CommonStructures overwrites
 	method variable-names-list($/) { make $<variable-name>>>.made.join(', '); }
 	method quoted-variable-names-list($/) { make $<quoted-variable-name>>>.made.join(', '); }
 	method mixed-quoted-variable-names-list($/) { make $<mixed-quoted-variable-name>>>.made.join(', '); }
-	method integer-value($/) { make $/.Str; }
-	method number-value($/) { make $/.Str; }
-	method wl-expr($/) { make $/.Str.substr(1,*-1); }
-	method quoted-variable-name($/) { make $/.values[0].made; }
-	method mixed-quoted-variable-name($/) { make $/.values[0].made; }
-	method single-quoted-variable-name($/) { make '"' ~ $<variable-name>.made ~ '"'; }
-	method double-quoted-variable-name($/) { make '"' ~ $<variable-name>.made ~ '"'; }
-	
-	# Trivial
-	method trivial-parameter($/) { make $/.values[0].made; }
-	method trivial-parameter-none($/) { make 'NA'; }
-	method trivial-parameter-empty($/) { make 'c()'; }
-	method trivial-parameter-automatic($/) { make 'NULL'; }
-	method trivial-parameter-false($/) { make 'FALSE'; }
-	method trivial-parameter-true($/) { make 'TRUE'; }
 
 	# Data load command
     method data-load-command($/)  { make $/.values[0].made; }

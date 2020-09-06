@@ -30,31 +30,26 @@
 
 use v6;
 use DSL::English::SearchEngineQueries::Grammar;
-use DSL::Shared::Actions::R::CommonStructures;
-use DSL::Shared::Actions::R::PredicateSpecification;
+use DSL::Shared::Actions::WL::CommonStructures;
+use DSL::Shared::Actions::WL::PredicateSpecification;
 
-unit module DSL::English::SearchEngineQueries::Actions::R::SMRMon;
+unit module DSL::English::SearchEngineQueries::Actions::WL::SMRMon;
 
-class DSL::English::SearchEngineQueries::Actions::R::SMRMon
-        is DSL::Shared::Actions::R::CommonStructures
-        is DSL::Shared::Actions::R::PredicateSpecification {
+class DSL::English::SearchEngineQueries::Actions::WL::SMRMon
+        is DSL::Shared::Actions::WL::CommonStructures
+        is DSL::Shared::Actions::WL::PredicateSpecification {
 
 	method TOP($/) { make $/.values[0].made; }
-
-	# DSL::Shared::Actions::R::CommonStructures overwrites
-	method variable-names-list($/) { make $<variable-name>>>.made.join(', '); }
-	method quoted-variable-names-list($/) { make $<quoted-variable-name>>>.made.join(', '); }
-	method mixed-quoted-variable-names-list($/) { make $<mixed-quoted-variable-name>>>.made.join(', '); }
 
 	# Data load command
     method data-load-command($/)  { make $/.values[0].made; }
     method data-location-spec($/) { make $<dataset-name>.made; }
-	method load-data-table($/)    { make 'SMRMonSetData( data = ' ~ $<data-location-spec>.made ~ ')'; }
-    method use-data-table($/)     { make 'SMRMonSetData( data = ' ~ $<variable-name>.made ~ ')'; }
+	method load-data-table($/)    { make 'SMRMonSetData[ data = ' ~ $<data-location-spec>.made ~ ']'; }
+    method use-data-table($/)     { make 'SMRMonSetData[ data = ' ~ $<variable-name>.made ~ ']'; }
     method use-recommender($/)    { make $<variable-name>.made; }
 
 	# Filter command
-	method filter-command($/) { make 'SMRMonFilterMatrix( ' ~ $<filter-spec>.made ~ ' )'; }
+	method filter-command($/) { make 'SMRMonFilterMatrix[ ' ~ $<filter-spec>.made ~ ' ]'; }
 	method filter-spec($/) { make $<predicates-list>.made; }
 
 	# Search command
@@ -65,11 +60,11 @@ class DSL::English::SearchEngineQueries::Actions::R::SMRMon
 
 		my %groups =  @pairs.classify: *.[0], as => *.[1];
 
-		my $should = do if %groups<SHOULD> { 'c( ' ~ %groups<SHOULD>.join(', ') ~ ' )' } else { 'NULL' };
-		my $must = do if %groups<MUST> { 'c( ' ~ %groups<MUST>.join(', ') ~ ' )' } else { 'NULL' };
-		my $mustNot = do if %groups<MUSTNOT> { 'c( ' ~ %groups<MUSTNOT>.join(', ') ~ ' )' } else { 'NULL' };
+		my $should = do if %groups<SHOULD> { '{ ' ~ %groups<SHOULD>.join(', ') ~ ' }' } else { 'None' };
+		my $must = do if %groups<MUST> { '{ ' ~ %groups<MUST>.join(', ') ~ ' }' } else { 'None' };
+		my $mustNot = do if %groups<MUSTNOT> { '{ ' ~ %groups<MUSTNOT>.join(', ') ~ ' }' } else { 'None' };
 
-		make 'SMRMonRetrieveByQueryElements( should = ' ~ $should ~ ', must = ' ~ $must ~ ', mustNot = ' ~ $mustNot ~ ' )';
+		make 'SMRMonRetrieveByQueryElements[ "Should" -> ' ~ $should ~ ', "Must" -> ' ~ $must ~ ', "MustNot" -> ' ~ $mustNot ~ ' ]';
 	}
 
 	method query-element-spec($/) { make $/.values[0].made; }
