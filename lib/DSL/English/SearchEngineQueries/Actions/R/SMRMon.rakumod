@@ -30,13 +30,13 @@
 
 use v6;
 use DSL::English::SearchEngineQueries::Grammar;
-use DSL::Shared::Actions::R::CommonStructures;
+use DSL::Shared::Actions::English::R::PipelineCommand;
 use DSL::Shared::Actions::R::PredicateSpecification;
 
 unit module DSL::English::SearchEngineQueries::Actions::R::SMRMon;
 
 class DSL::English::SearchEngineQueries::Actions::R::SMRMon
-        is DSL::Shared::Actions::R::CommonStructures
+        is DSL::Shared::Actions::English::R::PipelineCommand
         is DSL::Shared::Actions::R::PredicateSpecification {
 
 	method TOP($/) { make $/.values[0].made; }
