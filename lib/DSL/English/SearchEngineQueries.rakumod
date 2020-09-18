@@ -15,6 +15,8 @@ Standard Query Language (SQL) or RStudio's library tidyverse.
 
 unit module DSL::English::SearchEngineQueries;
 
+use DSL::Shared::Utilities::MetaSpecifications;
+
 use DSL::English::SearchEngineQueries::Grammar;
 
 use DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard;
@@ -73,13 +75,19 @@ multi ToSearchEngineQueryCode ( Str $command where not has-semicolon($command), 
 
 multi ToSearchEngineQueryCode ( Str $command where has-semicolon($command), Str $target = "R-SMRMon" ) {
 
-    die 'Unknown target.' unless %targetToAction{$target}:exists;
+    my $specTarget = get-dsl-spec( $command, 'target');
+
+    $specTarget = !$specTarget ?? $target !! $specTarget.value;
+
+    die 'Unknown target.' unless %targetToAction{$specTarget}:exists;
 
     my @commandLines = $command.trim.split(/ ';' \s* /);
 
     @commandLines = grep { $_.Str.chars > 0 }, @commandLines;
 
-    my @dqLines = map { ToSearchEngineQueryCode($_, $target) }, @commandLines;
+    my @cmdLines = map { ToSearchEngineQueryCode($_, $specTarget) }, @commandLines;
 
-    return @dqLines.join( %targetToSeparator{$target} ).trim;
+    @cmdLines = grep { $_.^name eq 'Str' }, @cmdLines;
+
+    return @cmdLines.join( %targetToSeparator{$specTarget} ).trim;
 }
