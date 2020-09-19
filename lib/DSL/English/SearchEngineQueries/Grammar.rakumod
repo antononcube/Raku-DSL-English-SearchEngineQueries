@@ -53,7 +53,7 @@ grammar DSL::English::SearchEngineQueries::Grammar
     rule use-recommender { [ <.use-verb> | <.using-preposition> ] <.the-determiner>? <.recommender-object> <variable-name> }
 
     # Filter command
-    rule filter-command { <filter> <.the-determiner>? <.documents>? [ <.for-which-phrase>? | <.by-preposition> ] <filter-spec> }
+    rule filter-command { <filter> <.the-determiner>? <.documents-noun>? [ <.for-which-phrase>? | <.by-preposition> ] <filter-spec> }
     rule filter-spec { <predicates-list> }
 
     # Search query command
