@@ -15,7 +15,7 @@ Standard Query Language (SQL) or RStudio's library tidyverse.
 
 unit module DSL::English::SearchEngineQueries;
 
-use DSL::Shared::Utilities::MetaSpecifications;
+use DSL::Shared::Utilities::MetaSpecsProcessing;
 
 use DSL::English::SearchEngineQueries::Grammar;
 
@@ -77,7 +77,7 @@ multi ToSearchEngineQueryCode ( Str $command where has-semicolon($command), Str 
 
     my $specTarget = get-dsl-spec( $command, 'target');
 
-    $specTarget = !$specTarget ?? $target !! $specTarget.value;
+    $specTarget = $specTarget ?? $specTarget<DSLTARGET> !! $target;
 
     die 'Unknown target.' unless %targetToAction{$specTarget}:exists;
 
