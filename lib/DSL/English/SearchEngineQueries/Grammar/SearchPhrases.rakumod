@@ -15,6 +15,6 @@ role DSL::English::SearchEngineQueries::Grammar::SearchPhrases
     token site-noun { 'site' | ([\w]+) <?{ is-fuzzy-match( $0.Str, 'site') }> }
 
     rule filter { <filter-verb> | <select-verb> }
-    rule recommender-object { <recommender> [ <object> | <system> ]? | 'smr' }
+    rule recommender-object { <recommender> [ <object-noun> | <system> ]? | 'smr' }
 }
 
