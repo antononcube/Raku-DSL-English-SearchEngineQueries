@@ -14,5 +14,5 @@ role DSL::English::SearchEngineQueries::Grammar::SearchPhrases
     token site-noun { 'site' }
 
     rule filter { <filter-verb> | <select-verb> }
-    rule recommender-object { <recommender> [ <object-noun> | <system> ]? | 'smr' }
+    rule recommender-object { <recommender> [ <object-noun> | <system-noun> ]? | 'smr' }
 }
