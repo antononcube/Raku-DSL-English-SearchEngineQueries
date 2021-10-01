@@ -15,7 +15,7 @@ Standard Query Language (SQL) or RStudio's library tidyverse.
 
 unit module DSL::English::SearchEngineQueries;
 
-use DSL::Shared::Utilities::MetaSpecsProcessing;
+use DSL::Shared::Utilities::CommandProcessing;
 
 use DSL::English::SearchEngineQueries::Grammar;
 
@@ -23,6 +23,7 @@ use DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard;
 use DSL::English::SearchEngineQueries::Actions::R::tidyverse;
 use DSL::English::SearchEngineQueries::Actions::R::SMRMon;
 use DSL::English::SearchEngineQueries::Actions::WL::SMRMon;
+use DSL::English::SearchEngineQueries::Actions::WL::System;
 
 
 #-----------------------------------------------------------
@@ -41,53 +42,38 @@ use DSL::English::SearchEngineQueries::Actions::WL::SMRMon;
 my %targetToAction =
     "Elasticsearch"          => DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard,
     "Elasticsearch-Standard" => DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard,
-    "R-tidyverse"            => DSL::English::SearchEngineQueries::Actions::R::tidyverse,
     "R-SMRMon"               => DSL::English::SearchEngineQueries::Actions::R::SMRMon,
+    "R-tidyverse"            => DSL::English::SearchEngineQueries::Actions::R::tidyverse,
+    "R::SMRMon"              => DSL::English::SearchEngineQueries::Actions::R::SMRMon,
     "SMRMon-R"               => DSL::English::SearchEngineQueries::Actions::R::SMRMon,
+    "SMRMon-WL"              => DSL::English::SearchEngineQueries::Actions::WL::SMRMon,
     "WL-SMRMon"              => DSL::English::SearchEngineQueries::Actions::WL::SMRMon,
-    "SMRMon-WL"              => DSL::English::SearchEngineQueries::Actions::WL::SMRMon;
+    "WL-System"              => DSL::English::SearchEngineQueries::Actions::WL::System,
+    "WL::SMRMon"             => DSL::English::SearchEngineQueries::Actions::WL::SMRMon,
+    "WL::System"             => DSL::English::SearchEngineQueries::Actions::WL::System;
 
 my %targetToSeparator{Str} =
     "Elasticsearch"          => " \n",
     "Elasticsearch-Standard" => " \n",
-    "R-tidyverse"            => " %>%\n",
     "R-SMRMon"               => " %>%\n",
+    "R-tidyverse"            => " %>%\n",
     "SMRMon-R"               => " %>%\n",
-    "WL-SMRMon"              => " ==>\n",
-    "SMRMon-WL"              => " ==>\n";
-
-#-----------------------------------------------------------
-sub has-semicolon (Str $word) {
-    return defined index $word, ';';
-}
+    "SMRMon-WL"              => " \\[DoubleLongRightArrow]\n",
+    "WL-SMRMon"              => " \\[DoubleLongRightArrow]\n",
+    "WL::SMRMon"             => " \\[DoubleLongRightArrow]\n",
+    "WL-System"              => ";\n",
+    "WL::System"             => ";\n";
 
 #-----------------------------------------------------------
 proto ToSearchEngineQueryCode(Str $command, Str $target = "R-SMRMon" ) is export {*}
 
-multi ToSearchEngineQueryCode ( Str $command where not has-semicolon($command), Str $target = "R-SMRMon" ) {
+multi ToSearchEngineQueryCode ( Str $command, Str $target = 'R-SMRMon', *%args ) {
 
-    die 'Unknown target.' unless %targetToAction{$target}:exists;
+    DSL::Shared::Utilities::CommandProcessing::ToWorkflowCode( $command,
+                                                               grammar => DSL::English::SearchEngineQueries::Grammar,
+                                                               :%targetToAction,
+                                                               :%targetToSeparator,
+                                                               :$target,
+                                                               |%args )
 
-    my $match = DSL::English::SearchEngineQueries::Grammar.parse($command.trim, actions => %targetToAction{$target} );
-    die 'Cannot parse the given command.' unless $match;
-    return $match.made;
-}
-
-multi ToSearchEngineQueryCode ( Str $command where has-semicolon($command), Str $target = "R-SMRMon" ) {
-
-    my $specTarget = get-dsl-spec( $command, 'target');
-
-    $specTarget = $specTarget ?? $specTarget<DSLTARGET> !! $target;
-
-    die 'Unknown target.' unless %targetToAction{$specTarget}:exists;
-
-    my @commandLines = $command.trim.split(/ ';' \s* /);
-
-    @commandLines = grep { $_.Str.chars > 0 }, @commandLines;
-
-    my @cmdLines = map { ToSearchEngineQueryCode($_, $specTarget) }, @commandLines;
-
-    @cmdLines = grep { $_.^name eq 'Str' }, @cmdLines;
-
-    return @cmdLines.join( %targetToSeparator{$specTarget} ).trim;
 }
