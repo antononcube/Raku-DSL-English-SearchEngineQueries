@@ -66,7 +66,7 @@ class DSL::English::SearchEngineQueries::Actions::R::tidyverse
 		my %groups =  @pairs.classify: *.[0], as => *.[1];
 
 		my $should = do if %groups<SHOULD> { ~ %groups<SHOULD>.join(' | ') } else { '' };
-		my $must = do if %groups<MUST> { 'c( ' ~ %groups<MUST>.join(' & ') ~ ' )' } else { '' };
+		my $must = do if %groups<MUST> { '( ' ~ %groups<MUST>.join(' & ') ~ ' )' } else { '' };
 		my $mustNot = do if %groups<MUSTNOT> { '!( ' ~ %groups<MUSTNOT>.join(' & ') ~ ' )' } else { '' };
 
 		my $junctMust = do if $should.chars() > 0 { ' & ' } else { '' };
