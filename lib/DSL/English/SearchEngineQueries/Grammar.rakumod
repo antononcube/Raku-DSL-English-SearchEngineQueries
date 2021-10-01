@@ -34,10 +34,12 @@ use DSL::Shared::Roles::PredicateSpecification;
 use DSL::Shared::Roles::ErrorHandling;
 
 use DSL::English::SearchEngineQueries::Grammar::SearchPhrases;
+use DSL::English::SearchEngineQueries::Grammar::SearchQueryCommand;
 
 grammar DSL::English::SearchEngineQueries::Grammar
-        does DSL::Shared::Roles::ErrorHandling
+        does DSL::English::SearchEngineQueries::Grammar::SearchQueryCommand
         does DSL::English::SearchEngineQueries::Grammar::SearchPhrases
+        does DSL::Shared::Roles::ErrorHandling
         does DSL::Shared::Roles::PredicateSpecification {
     # TOP
     rule TOP {
@@ -56,27 +58,4 @@ grammar DSL::English::SearchEngineQueries::Grammar
     rule filter-command { <filter> <.the-determiner>? <.documents-noun>? [ <.for-which-phrase>? | <.by-preposition> ] <filter-spec> }
     rule filter-spec { <predicates-list> }
 
-    # Search query command
-    rule search-query-command { <query-element-spec-list> }
-
-    rule query-element-spec-list { <query-element-spec>+ % <.ws> }
-    token query-element-spec { <query-keyword-value-element> | <query-must-element> | <query-must-not-element> | <query-should-element> }
-
-    token query-element { <query-simple-element> | <query-field-value-element> }
-
-    token query-simple-element { <query-term> | <query-phrase> }
-    token query-term { <variable-name> }
-    token query-phrase { '"' <-["]>+ '"' | '\'' <-[']>+ '\'' }
-
-    token query-should-element { ['OR' \h+]? <query-element> }
-    token query-must-element { '+' <query-element> | 'AND' \h+ <query-element> }
-    token query-must-not-element { '-' <query-element> | 'NOT' \h+ <query-element> }
-
-    token query-keyword-value-separator { ':' }
-    token query-keyword-value-element { <query-keyword> <.query-keyword-value-separator> <query-simple-element> }
-    token query-keyword { <filetype-noun> | <link-noun> | <site-noun> }
-
-    token query-field-value-separator { ':' }
-    token query-field-value-element { <query-field> <.query-field-value-separator> <query-simple-element> }
-    token query-field { <query-simple-element> }
 }
