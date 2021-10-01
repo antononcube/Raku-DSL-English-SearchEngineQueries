@@ -49,12 +49,12 @@ class DSL::English::SearchEngineQueries::Actions::WL::System
 	# Data load command
     method data-load-command($/)  { make $/.values[0].made; }
     method data-location-spec($/) { make $<dataset-name>.made; }
-	method load-data-table($/)    { make 'data(' ~ $<data-location-spec>.made ~ ')'; }
+	method load-data-table($/)    { make 'ResourcesFunction["ExampleDataset"][' ~ $<data-location-spec>.made ~ ']'; }
     method use-data-table($/)     { make $<variable-name>.made; }
     method use-recommender($/)    { make $<variable-name>.made ~ ' %>% SMRMonTakeData()'; }
 
 	# Filter command
-	method filter-command($/) { make 'dplyr::filter(' ~ $<filter-spec>.made ~ ')'; }
+	method filter-command($/) { make 'Select[' ~ $<filter-spec>.made ~ '&]'; }
 	method filter-spec($/) { make $<predicates-list>.made; }
 
 	# Search command
@@ -65,14 +65,14 @@ class DSL::English::SearchEngineQueries::Actions::WL::System
 
 		my %groups =  @pairs.classify: *.[0], as => *.[1];
 
-		my $should = do if %groups<SHOULD> { ~ %groups<SHOULD>.join(' | ') } else { '' };
-		my $must = do if %groups<MUST> { 'c( ' ~ %groups<MUST>.join(' & ') ~ ' )' } else { '' };
-		my $mustNot = do if %groups<MUSTNOT> { '!( ' ~ %groups<MUSTNOT>.join(' & ') ~ ' )' } else { '' };
+		my $should = do if %groups<SHOULD> { ~ %groups<SHOULD>.join(' || ') } else { '' };
+		my $must = do if %groups<MUST> { '( ' ~ %groups<MUST>.join(' && ') ~ ' )' } else { '' };
+		my $mustNot = do if %groups<MUSTNOT> { '!( ' ~ %groups<MUSTNOT>.join(' && ') ~ ' )' } else { '' };
 
-		my $junctMust = do if $should.chars() > 0 { ' & ' } else { '' };
-		my $junctMustNot = do if $should.chars() + $must.chars() > 0 { ' & ' } else { '' };
+		my $junctMust = do if $should.chars() > 0 { ' && ' } else { '' };
+		my $junctMustNot = do if $should.chars() + $must.chars() > 0 { ' && ' } else { '' };
 
-		make 'dplyr::filter(  (' ~ $should ~ ')' ~ $junctMust ~ $must ~ $junctMustNot ~ $mustNot ~ ' )';
+		make 'Select[ (' ~ $should ~ ')' ~ $junctMust ~ $must ~ $junctMustNot ~ $mustNot ~ ' ]';
 	}
 
 	method query-element-spec($/) { make $/.values[0].made; }
