@@ -22,6 +22,7 @@ use DSL::English::SearchEngineQueries::Grammar;
 use DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard;
 use DSL::English::SearchEngineQueries::Actions::R::tidyverse;
 use DSL::English::SearchEngineQueries::Actions::R::SMRMon;
+use DSL::English::SearchEngineQueries::Actions::Raku::Ecosystem;
 use DSL::English::SearchEngineQueries::Actions::WL::SMRMon;
 use DSL::English::SearchEngineQueries::Actions::WL::System;
 
@@ -45,6 +46,8 @@ my %targetToAction =
     "R-SMRMon"               => DSL::English::SearchEngineQueries::Actions::R::SMRMon,
     "R-tidyverse"            => DSL::English::SearchEngineQueries::Actions::R::tidyverse,
     "R::SMRMon"              => DSL::English::SearchEngineQueries::Actions::R::SMRMon,
+    "Raku-Ecosystem"         => DSL::English::SearchEngineQueries::Actions::Raku::Ecosystem,
+    "Raku::Ecosystem"        => DSL::English::SearchEngineQueries::Actions::Raku::Ecosystem,
     "SMRMon-R"               => DSL::English::SearchEngineQueries::Actions::R::SMRMon,
     "SMRMon-WL"              => DSL::English::SearchEngineQueries::Actions::WL::SMRMon,
     "WL-SMRMon"              => DSL::English::SearchEngineQueries::Actions::WL::SMRMon,
@@ -58,6 +61,8 @@ my %targetToSeparator{Str} =
     "R-SMRMon"               => " %>%\n",
     "R-tidyverse"            => " %>%\n",
     "SMRMon-R"               => " %>%\n",
+    "Raku-Ecosystem"         => ";\\n",
+    "Raku::Ecosystem"        => ";\\n",
     "SMRMon-WL"              => " \\[DoubleLongRightArrow]\n",
     "WL-SMRMon"              => " \\[DoubleLongRightArrow]\n",
     "WL::SMRMon"             => " \\[DoubleLongRightArrow]\n",
