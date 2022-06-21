@@ -76,7 +76,7 @@ class DSL::English::SearchEngineQueries::Actions::R::tidyverse
 	method query-element-spec($/) { make $/.values[0].made; }
 	method query-element($/) {
 		if $<query-simple-element> {
-			make 'term = ' ~ $/.values[0].made;
+			make 'term == ' ~ $/.values[0].made;
 		} else {
 			make $/.values[0].made;
 		}
