@@ -18,7 +18,7 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #   Written by Anton Antonov,
-#   antononcube @ gmai l . c om,
+#   ʇǝu˙oǝʇsod@ǝqnɔuouoʇuɐ,
 #   Windermere, Florida, USA.
 #
 #==============================================================================
@@ -32,8 +32,6 @@ use v6;
 use DSL::English::SearchEngineQueries::Grammar;
 use DSL::Shared::Actions::English::WL::PipelineCommand;
 use DSL::Shared::Actions::WL::PredicateSpecification;
-
-unit module DSL::English::SearchEngineQueries::Actions::WL::System;
 
 class DSL::English::SearchEngineQueries::Actions::WL::System
         is DSL::Shared::Actions::English::WL::PipelineCommand

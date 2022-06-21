@@ -18,7 +18,7 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #   Written by Anton Antonov,
-#   antononcube @ gmai l . c om,
+#   ʇǝu˙oǝʇsod@ǝqnɔuouoʇuɐ,
 #   Windermere, Florida, USA.
 #
 #==============================================================================
@@ -28,12 +28,10 @@
 #==============================================================================
 =end comment
 
-use v6;
+use v6.d;
 use DSL::English::SearchEngineQueries::Grammar;
 use DSL::Shared::Actions::English::R::PipelineCommand;
 use DSL::Shared::Actions::R::PredicateSpecification;
-
-unit module DSL::English::SearchEngineQueries::Actions::R::tidyverse;
 
 class DSL::English::SearchEngineQueries::Actions::R::tidyverse
         is DSL::Shared::Actions::English::R::PipelineCommand

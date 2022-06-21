@@ -18,7 +18,7 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #   Written by Anton Antonov,
-#   antononcube @ gmai l . c om,
+#   ʇǝu˙oǝʇsod@ǝqnɔuouoʇuɐ,
 #   Windermere, Florida, USA.
 #
 #==============================================================================
@@ -31,8 +31,6 @@
 use v6;
 use DSL::English::SearchEngineQueries::Grammar;
 use DSL::Shared::Actions::R::PredicateSpecification;
-
-unit module DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard;
 
 class DSL::English::SearchEngineQueries::Actions::MongoDB::Standard
         is DSL::Shared::Actions::R::PredicateSpecification {
