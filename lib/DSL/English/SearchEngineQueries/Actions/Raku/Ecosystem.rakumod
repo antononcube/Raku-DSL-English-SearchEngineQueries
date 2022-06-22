@@ -70,7 +70,7 @@ class DSL::English::SearchEngineQueries::Actions::Raku::Ecosystem
 		my $junctMust = do if $should.chars() > 0 { ' && ' } else { '' };
 		my $junctMustNot = do if $should.chars() + $must.chars() > 0 { ' && ' } else { '' };
 
-		make '.grep(  (' ~ $should ~ ')' ~ $junctMust ~ $must ~ $junctMustNot ~ $mustNot ~ ' )';
+		make '.grep({  (' ~ $should ~ ')' ~ $junctMust ~ $must ~ $junctMustNot ~ $mustNot ~ ' })';
 	}
 
 	method query-element-spec($/) { make $/.values[0].made; }
