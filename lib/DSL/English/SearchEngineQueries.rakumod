@@ -45,15 +45,14 @@ my %targetToAction =
     "Elasticsearch-Standard" => DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard,
     "R-SMRMon"               => DSL::English::SearchEngineQueries::Actions::R::SMRMon,
     "R-tidyverse"            => DSL::English::SearchEngineQueries::Actions::R::tidyverse,
-    "R::SMRMon"              => DSL::English::SearchEngineQueries::Actions::R::SMRMon,
     "Raku-Ecosystem"         => DSL::English::SearchEngineQueries::Actions::Raku::Ecosystem,
-    "Raku::Ecosystem"        => DSL::English::SearchEngineQueries::Actions::Raku::Ecosystem,
     "SMRMon-R"               => DSL::English::SearchEngineQueries::Actions::R::SMRMon,
     "SMRMon-WL"              => DSL::English::SearchEngineQueries::Actions::WL::SMRMon,
     "WL-SMRMon"              => DSL::English::SearchEngineQueries::Actions::WL::SMRMon,
-    "WL-System"              => DSL::English::SearchEngineQueries::Actions::WL::System,
-    "WL::SMRMon"             => DSL::English::SearchEngineQueries::Actions::WL::SMRMon,
-    "WL::System"             => DSL::English::SearchEngineQueries::Actions::WL::System;
+    "WL-System"              => DSL::English::SearchEngineQueries::Actions::WL::System;
+
+my %targetToAction2{Str} = %targetToAction.grep({ $_.key.contains('-') }).map({ $_.key.subst('-', '::') => $_.value }).Hash;
+%targetToAction = |%targetToAction , |%targetToAction2;
 
 my %targetToSeparator{Str} =
     "Elasticsearch"          => " \n",
@@ -62,15 +61,16 @@ my %targetToSeparator{Str} =
     "R-tidyverse"            => " %>%\n",
     "SMRMon-R"               => " %>%\n",
     "Raku-Ecosystem"         => ";\\n",
-    "Raku::Ecosystem"        => ";\\n",
     "SMRMon-WL"              => " \\[DoubleLongRightArrow]\n",
     "WL-SMRMon"              => " \\[DoubleLongRightArrow]\n",
-    "WL::SMRMon"             => " \\[DoubleLongRightArrow]\n",
-    "WL-System"              => ";\n",
-    "WL::System"             => ";\n";
+    "WL-System"              => ";\n";
+
+my Str %targetToSeparator2{Str} = %targetToSeparator.grep({ $_.key.contains('-') }).map({ $_.key.subst('-', '::') => $_.value }).Hash;
+%targetToSeparator = |%targetToSeparator , |%targetToSeparator2;
+
 
 #-----------------------------------------------------------
-proto ToSearchEngineQueryCode(Str $command, Str $target = "R-SMRMon" ) is export {*}
+proto ToSearchEngineQueryCode(Str $command, Str $target = 'R-SMRMon', | ) is export {*}
 
 multi ToSearchEngineQueryCode ( Str $command, Str $target = 'R-SMRMon', *%args ) {
 
