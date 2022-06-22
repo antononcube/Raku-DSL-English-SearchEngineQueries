@@ -70,7 +70,9 @@ class DSL::English::SearchEngineQueries::Actions::R::tidyverse
 		my $junctMust = do if $should.chars() > 0 { ' & ' } else { '' };
 		my $junctMustNot = do if $should.chars() + $must.chars() > 0 { ' & ' } else { '' };
 
-		make 'dplyr::filter(  (' ~ $should ~ ')' ~ $junctMust ~ $must ~ $junctMustNot ~ $mustNot ~ ' )';
+		$should = $should ?? '(' ~ $should ~ ')' !! '';
+
+		make 'dplyr::filter( ' ~ $should ~ $junctMust ~ $must ~ $junctMustNot ~ $mustNot ~ ' )';
 	}
 
 	method query-element-spec($/) { make $/.values[0].made; }
