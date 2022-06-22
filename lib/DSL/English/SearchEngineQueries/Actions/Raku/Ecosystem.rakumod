@@ -29,7 +29,7 @@
 =end comment
 
 use v6.d;
-use DSL::English::SearchEngineQueries::Grammar;
+
 use DSL::Shared::Actions::English::Raku::PipelineCommand;
 use DSL::Shared::Actions::Raku::PredicateSpecification;
 
@@ -66,11 +66,17 @@ class DSL::English::SearchEngineQueries::Actions::Raku::Ecosystem
 		my $should = do if %groups<SHOULD> { ~ %groups<SHOULD>.join(' || ') } else { '' };
 		my $must = do if %groups<MUST> { '( ' ~ %groups<MUST>.join(' && ') ~ ' )' } else { '' };
 		my $mustNot = do if %groups<MUSTNOT> { '!( ' ~ %groups<MUSTNOT>.join(' & ') ~ ' )' } else { '' };
+		my $filetype = do if %groups<FILETYPE> { '( ' ~ %groups<FILETYPE>.join(' | ') ~ ' )' } else { '' };
+		my $site = do if %groups<SITE> { '( ' ~ %groups<SITE>.join(' | ') ~ ' )' } else { '' };
 
-		my $junctMust = do if $should.chars() > 0 { ' && ' } else { '' };
-		my $junctMustNot = do if $should.chars() + $must.chars() > 0 { ' && ' } else { '' };
+		my $junctMust = do if $must && $should.chars > 0 { ' && ' } else { '' };
+		my $junctMustNot = do if $mustNot && $should.chars + $must.chars > 0 { ' && ' } else { '' };
+		my $junctFiletype = do if $filetype && ($should, $must, $mustNot)>>.chars.sum > 0 { ' && ' } else { '' };
+		my $junctSite = do if $site && ($should, $must, $mustNot, $filetype)>>.chars.sum > 0 { ' && ' } else { '' };
 
-		make '.grep({  (' ~ $should ~ ')' ~ $junctMust ~ $must ~ $junctMustNot ~ $mustNot ~ ' })';
+		$should = $should ?? '(' ~ $should ~ ')' !! '';
+
+		make '.grep({ ' ~ $should ~ $junctMust ~ $must ~ $junctMustNot ~ $mustNot ~ $junctFiletype ~ $filetype ~ $junctSite ~ $site ~ ' })';
 	}
 
 	method query-element-spec($/) { make $/.values[0].made; }
@@ -83,16 +89,20 @@ class DSL::English::SearchEngineQueries::Actions::Raku::Ecosystem
 	}
 
     method query-simple-element($/) { make $/.values[0].made; }
-	method query-term($/) { make '"' ~ $/.Str ~ '"'; }
+	method query-term($/) { make '\'' ~ $/.Str ~ '\''; }
 	method query-phrase($/) { make $/.Str; }
 
 	method query-should-element($/)   { make [ 'SHOULD',  $<query-element>.made ]; }
 	method query-must-element($/)     { make [ 'MUST',    $<query-element>.made ]; }
 	method query-must-not-element($/) { make [ 'MUSTNOT', $<query-element>.made ]; }
 
-	method query-keyword-value-element($/) { make [ $<query-keyword>.made, $<query-simple-element>.made ]; }
-	method query-keyword($/) { make $/.Str.uc; }
-
+	method query-keyword-value-element($/) { make [ $<query-keyword>.made, '$_<' ~ $<query-keyword>.made.lc ~ '> eq ' ~ $<query-simple-element>.made ]; }
+	method query-keyword($/) { make $/.values[0].made; }
 	method query-field-value-element($/) { make $<query-field>.made ~ " = " ~ $<query-simple-element>.made; }
-	method query-field($/) {make $/.values[0].made; }
+	method query-field($/) { make $/.values[0].made; }
+
+	method filetype-noun($/) { make 'FILETYPE'; }
+	method type-noun:sym<English> ($/) { make 'FILETYPE'; }
+	method site-noun($/) { make 'SITE'; }
+	method link-noun($/) { make 'SITE'; }
 }
