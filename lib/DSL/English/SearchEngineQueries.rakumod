@@ -19,6 +19,7 @@ use DSL::Shared::Utilities::CommandProcessing;
 
 use DSL::English::SearchEngineQueries::Grammar;
 
+use DSL::English::SearchEngineQueries::Actions::CLI::invoke-smr;
 use DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard;
 use DSL::English::SearchEngineQueries::Actions::R::tidyverse;
 use DSL::English::SearchEngineQueries::Actions::R::SMRMon;
@@ -41,6 +42,8 @@ use DSL::English::SearchEngineQueries::Actions::WL::System;
 #};
 
 my %targetToAction =
+    "CLI"                    => DSL::English::SearchEngineQueries::Actions::CLI::invoke-smr,
+    "CLI-invoke-smr"                    => DSL::English::SearchEngineQueries::Actions::CLI::invoke-smr,
     "Elasticsearch"          => DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard,
     "Elasticsearch-Standard" => DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard,
     "R-SMRMon"               => DSL::English::SearchEngineQueries::Actions::R::SMRMon,
@@ -51,10 +54,12 @@ my %targetToAction =
     "WL-SMRMon"              => DSL::English::SearchEngineQueries::Actions::WL::SMRMon,
     "WL-System"              => DSL::English::SearchEngineQueries::Actions::WL::System;
 
-my %targetToAction2{Str} = %targetToAction.grep({ $_.key.contains('-') }).map({ $_.key.subst('-', '::') => $_.value }).Hash;
+my %targetToAction2{Str} = %targetToAction.grep({ $_.key.contains('-') }).map({ $_.key.subst('-', '::'):nth(1) => $_.value }).Hash;
 %targetToAction = |%targetToAction , |%targetToAction2;
 
 my %targetToSeparator{Str} =
+    "CLI"                    => " \n",
+    "CLI-invoke-smr"         => " \n",
     "Elasticsearch"          => " \n",
     "Elasticsearch-Standard" => " \n",
     "R-SMRMon"               => " %>%\n",
