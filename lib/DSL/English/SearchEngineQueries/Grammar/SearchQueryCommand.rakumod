@@ -18,7 +18,7 @@ role DSL::English::SearchEngineQueries::Grammar::SearchQueryCommand {
 
     token query-keyword-value-separator { ':' }
     token query-keyword-value-element { <query-keyword> <.query-keyword-value-separator> <query-simple-element> }
-    token query-keyword { <filetype-noun> | <type-noun> | <link-noun> | <site-noun> | <recommender-noun> | <nresults-phrase> }
+    token query-keyword { <filetype-noun> | <type-noun> | <link-noun> | <site-noun> | <recommender-noun> | <nresults-phrase> | <script-noun> }
 
     token query-field-value-separator { ':' }
     token query-field-value-element { <query-field> <.query-field-value-separator> <query-simple-element> }
