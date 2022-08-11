@@ -14,6 +14,7 @@
   "test-depends": [],
   "provides": {
     "DSL::English::SearchEngineQueries": "lib/DSL/English/SearchEngineQueries.rakumod",
+    "DSL::English::SearchEngineQueries::Actions::CLI::invoke-smr": "lib/DSL/English/SearchEngineQueries/Actions/CLI/invoke-smr.rakumod",
     "DSL::English::SearchEngineQueries::Actions::Elasticsearch::Standard": "lib/DSL/English/SearchEngineQueries/Actions/Elasticsearch/Standard.rakumod",
     "DSL::English::SearchEngineQueries::Actions::MongoDB::Standard": "lib/DSL/English/SearchEngineQueries/Actions/MongoDB/Standard.rakumod",
     "DSL::English::SearchEngineQueries::Actions::R::SMRMon": "lib/DSL/English/SearchEngineQueries/Actions/R/SMRMon.rakumod",
