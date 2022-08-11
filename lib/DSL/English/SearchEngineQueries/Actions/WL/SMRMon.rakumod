@@ -83,8 +83,17 @@ class DSL::English::SearchEngineQueries::Actions::WL::SMRMon
 	method query-must-not-element($/) { make [ 'MUSTNOT', $<query-element>.made ]; }
 
 	method query-keyword-value-element($/) { make [ $<query-keyword>.made, $<query-simple-element>.made ]; }
-	method query-keyword($/) { make $/.Str.uc; }
+	method query-keyword($/) { make $/.values[0].made; }
 
 	method query-field-value-element($/) { make $<query-field>.made ~ ":" ~ $<query-simple-element>.made; }
 	method query-field($/) { make $/.values[0].made; }
+
+	# Keywords
+	method filetype-noun($/) { make 'FILETYPE'; }
+	method filter-verb($/) { make 'FILTER'; }
+	method link-noun($/) { make 'LINK'; }
+	method recommender-noun($/) { make 'RECOMMENDER'; }
+	method select-verb($/) { make 'SELECT'; }
+	method site-noun($/) { make 'SITE'; }
+	method nresults-phrase($/) { make 'NRESULTS' }
 }
