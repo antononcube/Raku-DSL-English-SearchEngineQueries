@@ -95,5 +95,6 @@ class DSL::English::SearchEngineQueries::Actions::WL::SMRMon
 	method recommender-noun($/) { make 'RECOMMENDER'; }
 	method select-verb($/) { make 'SELECT'; }
 	method site-noun($/) { make 'SITE'; }
+	method script-noun($/) { make 'SCRIPT' }
 	method nresults-phrase($/) { make 'NRESULTS' }
 }

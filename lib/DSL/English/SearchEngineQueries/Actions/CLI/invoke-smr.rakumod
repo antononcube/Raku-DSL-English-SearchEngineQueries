@@ -48,8 +48,9 @@ class DSL::English::SearchEngineQueries::Actions::CLI::invoke-smr
 		my $mustNot = do if %groups<MUSTNOT> { ' --must-not=\'' ~ %groups<MUSTNOT>.join(';') ~ '\'' } else { '' };
 		my $nrecs = do if %groups<NRESULTS> { ' --nrecs=' ~ %groups<NRESULTS>[0] } else { '' };
 		my $smr = do if %groups<RECOMMENDER> { ' --smr=' ~ %groups<RECOMMENDER>[0] } else { '' };
+		my $script = do if %groups<SCRIPT> { %groups<SCRIPT>[0] } else { '' };
 
-		make 'invoke-smr.py' ~ $should ~ $must ~ $mustNot ~ $nrecs ~ $smr;
+		make $script ~ $should ~ $must ~ $mustNot ~ $nrecs ~ $smr;
 	}
 
 	method query-term($/) { make $/.Str; }
