@@ -86,5 +86,5 @@ class DSL::English::SearchEngineQueries::Actions::WL::SMRMon
 	method query-keyword($/) { make $/.Str.uc; }
 
 	method query-field-value-element($/) { make $<query-field>.made ~ ":" ~ $<query-simple-element>.made; }
-	method query-field($/) {make $/.values[0].made; }
+	method query-field($/) { make $/.values[0].made; }
 }
