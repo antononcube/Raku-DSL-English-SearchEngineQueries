@@ -43,7 +43,7 @@ class DSL::English::SearchEngineQueries::Actions::CLI::invoke-smr
 
 		my %groups =  @pairs.classify: *.[0], as => *.[1];
 
-		my $should = do if %groups<SHOULD> { ' --should=\'' ~ %groups<SHOULD>.join(';') ~ '\'' } else { '' };
+		my $should = do if %groups<SHOULD> { ' --profile=\'' ~ %groups<SHOULD>.join(';') ~ '\'' } else { '' };
 		my $must = do if %groups<MUST> { ' --must=\'' ~ %groups<MUST>.join(';') ~ '\'' } else { '' };
 		my $mustNot = do if %groups<MUSTNOT> { ' --must-not=\'' ~ %groups<MUSTNOT>.join(';') ~ '\'' } else { '' };
 		my $nrecs = do if %groups<NRESULTS> { ' --nrecs=' ~ %groups<NRESULTS>[0] } else { '' };
@@ -53,5 +53,5 @@ class DSL::English::SearchEngineQueries::Actions::CLI::invoke-smr
 	}
 
 	method query-term($/) { make $/.Str; }
-	method query-phrase($/) { make $/.Str.subst(1, *-1); }
+	method query-phrase($/) { make $/.Str.substr(1, *-1); }
 }
