@@ -8,7 +8,8 @@
   ],
   "auth": "github:antononcube",
   "depends": [
-    "DSL::Shared"
+    "DSL::Shared",
+    "Clipboard"
   ],
   "build-depends": [],
   "test-depends": [],
@@ -24,7 +25,8 @@
     "DSL::English::SearchEngineQueries::Actions::WL::System": "lib/DSL/English/SearchEngineQueries/Actions/WL/System.rakumod",
     "DSL::English::SearchEngineQueries::Grammar": "lib/DSL/English/SearchEngineQueries/Grammar.rakumod",
     "DSL::English::SearchEngineQueries::Grammar::SearchPhrases": "lib/DSL/English/SearchEngineQueries/Grammar/SearchPhrases.rakumod",
-    "DSL::English::SearchEngineQueries::Grammar::SearchQueryCommand": "lib/DSL/English/SearchEngineQueries/Grammar/SearchQueryCommand.rakumod"
+    "DSL::English::SearchEngineQueries::Grammar::SearchQueryCommand": "lib/DSL/English/SearchEngineQueries/Grammar/SearchQueryCommand.rakumod",
+    "DSL::English::SearchEngineQueries::Grammarish": "lib/DSL/English/SearchEngineQueries/Grammarish.rakumod"
   },
   "resources": [],
   "license": "GPL-3.0-or-later",
