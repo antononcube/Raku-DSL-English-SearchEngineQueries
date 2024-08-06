@@ -29,19 +29,22 @@
 =end comment
 
 use v6.d;
+role DSL::English::SearchEngineQueries::Grammarish {
+    # TOP
+    rule TOP {
+        <data-load-command> |
+        <filter-command> |
+        <search-query-command> }
 
-use DSL::Shared::Roles::PredicateSpecification;
-use DSL::Shared::Roles::ErrorHandling;
+    # Load data
+    rule data-load-command { <load-data-table> | <use-recommender> | <use-data-table> }
+    rule data-location-spec { <dataset-name> }
+    rule load-data-table { <.load-data-directive> <data-location-spec> }
+    rule use-data-table  { [ <.use-verb> | <.using-preposition> ] <.the-determiner>? <.data>? <variable-name> }
+    rule use-recommender { [ <.use-verb> | <.using-preposition> ] <.the-determiner>? <.recommender-object> <variable-name> }
 
-use DSL::English::SearchEngineQueries::Grammar::SearchPhrases;
-use DSL::English::SearchEngineQueries::Grammar::SearchQueryCommand;
-use DSL::English::SearchEngineQueries::Grammarish;
-
-grammar DSL::English::SearchEngineQueries::Grammar
-        does DSL::English::SearchEngineQueries::Grammarish
-        does DSL::English::SearchEngineQueries::Grammar::SearchQueryCommand
-        does DSL::English::SearchEngineQueries::Grammar::SearchPhrases
-        does DSL::Shared::Roles::ErrorHandling
-        does DSL::Shared::Roles::PredicateSpecification {
+    # Filter command
+    rule filter-command { <filter> <.the-determiner>? <.documents-noun>? [ <.for-which-phrase>? | <.by-preposition> ] <filter-spec> }
+    rule filter-spec { <predicates-list> }
 
 }
