@@ -31,12 +31,6 @@ my $cmd = 'peach OR cherry +blossom -"cherry tree" AND fruit nrecs:20 recommende
 
 .say for <CLI Elasticsearch R::tidyverse WL-System>.map({ $_ => ToSearchEngineQueryCode($cmd, $_) })
 ```
-```
-# CLI => --profile='peach;cherry' --must='blossom;fruit' --must-not='cherry tree' --nrecs=20 --smr=Foods
-# Elasticsearch => { "bool" : { "should" : [ { "term" : { "tag" : "peach" } },  { "term" : { "tag" : "cherry" } } ], "must" : [ { "term" : { "tag" : "blossom" } },  { "term" : { "tag" : "fruit" } } ], "must_not" : [ { "term" : { "tag" : "cherry tree" } } ] } }
-# R::tidyverse => dplyr::filter( (term == "peach" | term == "cherry") & ( term == "blossom" & term == "fruit" ) & !( term == "cherry tree" ) )
-# WL-System => Select[(term = "peach" || term = "cherry") && ( term = "blossom" && term = "fruit" ) && !( term = "cherry tree" ) ]
-```
 
 ------
 
@@ -75,9 +69,6 @@ Here is an example execution from the command line:
 
 ```shell
 ToSearchEngineQueryCode -t=Elasticsearch +book on graphs 
-```
-```
-# { "bool" : { "should" : [ { "term" : { "tag" : "on" } },  { "term" : { "tag" : "graphs" } } ], "must" : [ { "term" : { "tag" : "book" } } ], "must_not" : [] } }
 ```
 
 **Remark:** The result is automatically placed in the clipboard. 
